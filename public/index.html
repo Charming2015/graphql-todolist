@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+  <div id="app">
+    <el-row type="flex" class="row-bg" justify="center">
+      <el-col :span="14">
+        <p style="width: 100%;">
+          todoList
+          <el-button type="text"><i 
+            class="el-icon-circle-plus-outline"
+            @click="openAddDialog"
+            style="font-size: 20px;cursor: pointer;" 
+          ></i></el-button>
+        </p>
+        <el-collapse accordion>
+          <el-collapse-item v-for="item in list" :key="item.id">
+            <template slot="title">
+              <el-checkbox v-model="item.checked" @change="tickOne($event, item.id)"></el-checkbox>
+              <i style="line-height:42px;height: 48px;vertical-align: middle; display:inline-block;font-style: normal;max-width: 60%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{item.title}}</i>
+              <span style="font-size: 12px;color:#666">({{item.date}})</span>
+              <i class="el-icon-edit" @click="openEditDialog(item.id)"></i>
+              <i class="el-icon-delete" @click="delOne(item.id)"></i>
+            </template>
+            <div style="padding-left: 10px;text-indent: 2em; word-wrap: break-word;">{{item.desc}}</div>
+          </el-collapse-item>
+        </el-collapse>
+      </el-col>
+    </el-row>
+    <el-dialog title="一个待办事项" :visible.sync="showDialog">
+      <el-form label-width="100px">
+        <el-form-item label="完成时间：">
+          <el-date-picker
+            v-model="params.date"
+            type="datetime"
+            placeholder="选择完成时间"
+            align="right"
+            :picker-options="pickerOptions">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="任务标题：">
+          <el-input v-model="params.title" placeholder="请输入标题"></el-input>
+        </el-form-item>
+        <el-form-item label="任务描述：">
+          <el-input
+            type="textarea"
+            :rows="4"
+            placeholder="请输入内容"
+            v-model="params.desc">
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="showDialog = false">取 消</el-button>
+        <el-button type="primary" @click="confirm" :disabled="disable">确 定</el-button>
+      </div>
+    </el-dialog>
+  </div>
+</body>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="./js/index.js"></script>
+</html>
